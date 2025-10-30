@@ -1,12 +1,19 @@
 export interface Photo {
-  id: number;
-  src: string;
-  alt: string;
-  width: number;
-  height: number;
+  id: number
+  src: string
+  alt: string
+  width: number
+  height: number
 }
 
-export const photos: Photo[] = [
+/**
+ * Original set (kept as-is except the problematic "Cityscape at night" entry
+ * is replaced with an existing image from the set).
+ *
+ * NOTE: no new external images are introduced — only the URLs already present
+ * in your code are reused below.
+ */
+const basePhotos: Photo[] = [
   {
     id: 1,
     src: 'https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?w=800&q=80',
@@ -56,10 +63,11 @@ export const photos: Photo[] = [
     width: 800,
     height: 800,
   },
+  // Replaced the problematic Cityscape entry by reusing an existing image URL
   {
     id: 8,
-    src: 'https://images.unsplash.com/photo-1682687982134-2fca0f0e8e27?w=800&q=80',
-    alt: 'Cityscape at night by Chestiuni',
+    src: 'https://images.unsplash.com/photo-1682687221038-404cb8830901?w=800&q=80', // reused from id:2
+    alt: 'Urban architecture (replacement for cityscape) by Chestiuni',
     width: 800,
     height: 600,
   },
@@ -91,4 +99,23 @@ export const photos: Photo[] = [
     width: 800,
     height: 800,
   },
-];
+]
+
+/**
+ * Build a larger test set by repeating the above existing images.
+ * - IDs are made unique.
+ * - Alt text appends a copy index so you can see repetitions.
+ * - No new image URLs are added.
+ */
+const TOTAL = 300 // adjust if you want more/less
+export const photos: Photo[] = Array.from({ length: TOTAL }, (_, i) => {
+  const base = basePhotos[i % basePhotos.length]
+  const copyIndex = Math.floor(i / basePhotos.length) + 1
+  return {
+    id: i + 1,
+    src: base.src,
+    alt: `${base.alt} (copy ${copyIndex})`,
+    width: base.width,
+    height: base.height,
+  }
+})
